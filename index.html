@@ -424,7 +424,8 @@
       try{
         const destination=new URL(url);
         if(destination.hostname==='ebay.com'||destination.hostname.endsWith('.ebay.com')){
-          return `https://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5339216946&toolid=10001&customid=${encodeURIComponent(placement)}&mpre=${encodeURIComponent(url)}`;
+          const separator=destination.search?'&':'?';
+          return `${url}${separator}mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339216946&customid=${encodeURIComponent(placement)}&toolid=10001&mkevt=1`;
         }
       }catch(error){}
       return url;
