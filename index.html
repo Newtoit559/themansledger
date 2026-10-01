@@ -45,8 +45,13 @@
     .tape span{display:inline-flex;gap:24px;align-items:center}
     .tape span:after{content:"◆";font-size:7px;color:var(--accent)}
     .controls{padding:24px 0 18px;position:sticky;top:0;z-index:15;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .control-top{display:grid;grid-template-columns:1fr auto auto;gap:10px}
+    .control-top{display:grid;grid-template-columns:minmax(320px,1fr) auto auto auto;gap:10px}
     .search{position:relative}
+    .category-toggle{display:inline-grid;grid-template-columns:repeat(3,auto);height:45px;border:1px solid var(--line);border-bottom-color:var(--ink);background:transparent}
+    .category-toggle button{min-width:66px;border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);padding:0 12px;font:500 10px "IBM Plex Mono",monospace;letter-spacing:.04em;text-transform:uppercase}
+    .category-toggle button:last-child{border-right:0}
+    .category-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    [hidden]{display:none!important}
     .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;color:var(--muted)}
     input,select{width:100%;height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:3px;padding:0 13px;outline:none}
     input{padding-left:42px}
@@ -151,7 +156,7 @@
       .mast-grid,.section-intro{grid-template-columns:1fr;gap:28px}.deal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.factor-grid{grid-template-columns:repeat(2,1fr)}.factor:nth-child(2){border-right:0}.factor:nth-child(-n+2){border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}
     }
     @media(max-width:620px){
-      .wrap{width:min(100% - 24px,1180px)}.mast{padding-top:24px}.mast-grid{gap:22px}.lede{font-size:16px}.tape-inner{justify-content:flex-start}.controls{position:relative;padding-top:16px}.control-top{grid-template-columns:1fr 1fr}.search{grid-column:1/-1}.deal-grid{grid-template-columns:1fr}.visual{height:190px}.factor-grid,.roadmap-grid,.detail-stats{grid-template-columns:1fr}.factor{border-right:0!important;border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}.factor:last-child{border-bottom:0}.phase+.phase{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px}.card-actions{grid-template-columns:1fr 1fr}.modal{padding:12px}.detail-stats div{border-right:0;border-bottom:1px solid var(--line)}.detail-stats div:last-child{border-bottom:0}.compare-tray{left:12px;right:12px;bottom:12px;justify-content:space-between}
+      .wrap{width:min(100% - 24px,1180px)}.mast{padding-top:24px}.mast-grid{gap:22px}.lede{font-size:16px}.tape-inner{justify-content:flex-start}.controls{padding-top:16px}.control-top{grid-template-columns:1fr 1fr}.search,.category-toggle{grid-column:1/-1}.category-toggle{grid-template-columns:repeat(3,1fr);width:100%}.deal-grid{grid-template-columns:1fr}.visual{height:190px}.factor-grid,.roadmap-grid,.detail-stats{grid-template-columns:1fr}.factor{border-right:0!important;border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}.factor:last-child{border-bottom:0}.phase+.phase{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px}.card-actions{grid-template-columns:1fr 1fr}.modal{padding:12px}.detail-stats div{border-right:0;border-bottom:1px solid var(--line)}.detail-stats div:last-child{border-bottom:0}.compare-tray{left:12px;right:12px;bottom:12px;justify-content:space-between}
     }
     @keyframes tape{to{transform:translateX(-50%)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tape-inner{animation:none}}
@@ -297,13 +302,18 @@
   </div>
 
   <main>
-    <section class="controls" aria-label="Watch deal controls">
+    <section class="controls" aria-label="Deal controls">
       <div class="wrap">
         <div class="control-top">
           <label class="search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
             <input id="search" type="search" placeholder="Look up any watch — reference, model, merchant…" aria-label="Search verified deals" />
           </label>
+          <div class="category-toggle" role="group" aria-label="Show deal category">
+            <button type="button" data-category-view="all" aria-pressed="true">All</button>
+            <button type="button" data-category-view="watches" aria-pressed="false">Watches</button>
+            <button type="button" data-category-view="cigars" aria-pressed="false">Cigars</button>
+          </div>
           <select id="sort" aria-label="Sort verified deals">
             <option value="discount">Largest discount</option>
             <option value="low">Price: low to high</option>
@@ -321,12 +331,12 @@
       </div>
     </section>
 
-    <section class="wrap" aria-labelledby="dealHeading">
+    <section class="wrap" id="watchLedger" aria-labelledby="dealHeading">
       <div class="meta-row"><h2 id="dealHeading">The watch register · October 1 (AM)</h2><span class="result-count" id="count"></span></div>
       <div class="deal-grid" id="grid"></div>
     </section>
 
-    <section class="cigar-ledger" aria-labelledby="cigarHeading">
+    <section class="cigar-ledger" id="cigarLedger" aria-labelledby="cigarHeading">
       <div class="wrap">
         <div class="cigar-head">
           <div>
@@ -418,6 +428,13 @@
     const categories=['All','Steals under $200','Value $200–$1K','Mid-range $1K–$3K','Luxury $3K+','Investment desk'];
     let active='All'; let compare=[];
     const grid=document.getElementById('grid'), filters=document.getElementById('filters'), count=document.getElementById('count');
+    const watchLedger=document.getElementById('watchLedger'), cigarLedger=document.getElementById('cigarLedger');
+    document.querySelectorAll('[data-category-view]').forEach(button=>button.addEventListener('click',()=>{
+      const view=button.dataset.categoryView;
+      document.querySelectorAll('[data-category-view]').forEach(option=>option.setAttribute('aria-pressed',String(option===button)));
+      watchLedger.hidden=view==='cigars';
+      cigarLedger.hidden=view==='watches';
+    }));
     categories.forEach(cat=>{const b=document.createElement('button');b.className='chip'+(cat==='All'?' active':'');const deskCount=cat==='All'?deals.length:deals.filter(d=>d.category===cat).length;b.textContent=`${cat} · ${deskCount}`;b.dataset.cat=cat;b.onclick=()=>{active=cat;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));render()};filters.appendChild(b)});
     const money=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2});
     function affiliateUrl(url,placement){
