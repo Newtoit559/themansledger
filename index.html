@@ -41,7 +41,7 @@
     .mast-note strong{display:block;font:700 24px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;margin-bottom:8px}
     .mast-note p{margin:0;color:var(--muted);font-size:14px}
     .tape{background:var(--charcoal);color:var(--paper);overflow:hidden}
-    .tape-inner{display:flex;gap:24px;padding:11px 0;font:500 11px "IBM Plex Mono",monospace;text-transform:uppercase;white-space:nowrap;justify-content:center}
+    .tape-inner{display:flex;gap:24px;padding:11px 0;font:500 11px "IBM Plex Mono",monospace;text-transform:uppercase;white-space:nowrap;justify-content:center;animation:tape 18s linear infinite}
     .tape span{display:inline-flex;gap:24px;align-items:center}
     .tape span:after{content:"◆";font-size:7px;color:var(--accent)}
     .controls{padding:24px 0 18px;position:sticky;top:0;z-index:15;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -151,7 +151,7 @@
       .mast-grid,.section-intro{grid-template-columns:1fr;gap:28px}.deal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.factor-grid{grid-template-columns:repeat(2,1fr)}.factor:nth-child(2){border-right:0}.factor:nth-child(-n+2){border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}
     }
     @media(max-width:620px){
-      .wrap{width:min(100% - 24px,1180px)}.mast{padding-top:24px}.mast-grid{gap:22px}.lede{font-size:16px}.tape-inner{justify-content:flex-start;animation:tape 18s linear infinite}.controls{position:relative;padding-top:16px}.control-top{grid-template-columns:1fr 1fr}.search{grid-column:1/-1}.deal-grid{grid-template-columns:1fr}.visual{height:190px}.factor-grid,.roadmap-grid,.detail-stats{grid-template-columns:1fr}.factor{border-right:0!important;border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}.factor:last-child{border-bottom:0}.phase+.phase{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px}.card-actions{grid-template-columns:1fr 1fr}.modal{padding:12px}.detail-stats div{border-right:0;border-bottom:1px solid var(--line)}.detail-stats div:last-child{border-bottom:0}.compare-tray{left:12px;right:12px;bottom:12px;justify-content:space-between}
+      .wrap{width:min(100% - 24px,1180px)}.mast{padding-top:24px}.mast-grid{gap:22px}.lede{font-size:16px}.tape-inner{justify-content:flex-start}.controls{position:relative;padding-top:16px}.control-top{grid-template-columns:1fr 1fr}.search{grid-column:1/-1}.deal-grid{grid-template-columns:1fr}.visual{height:190px}.factor-grid,.roadmap-grid,.detail-stats{grid-template-columns:1fr}.factor{border-right:0!important;border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}.factor:last-child{border-bottom:0}.phase+.phase{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px}.card-actions{grid-template-columns:1fr 1fr}.modal{padding:12px}.detail-stats div{border-right:0;border-bottom:1px solid var(--line)}.detail-stats div:last-child{border-bottom:0}.compare-tray{left:12px;right:12px;bottom:12px;justify-content:space-between}
     }
     @keyframes tape{to{transform:translateX(-50%)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tape-inner{animation:none}}
