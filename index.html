@@ -51,6 +51,10 @@
     .category-toggle button{min-width:66px;border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);padding:0 12px;font:500 10px "IBM Plex Mono",monospace;letter-spacing:.04em;text-transform:uppercase}
     .category-toggle button:last-child{border-right:0}
     .category-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .category-nav{display:flex;align-items:center;gap:14px;min-width:0}
+    .dispatch-link{color:var(--muted);font:500 10px "IBM Plex Mono",monospace;letter-spacing:.06em;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+    .dispatch-link:hover{color:var(--accent)}
+    .dispatch-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
     [hidden]{display:none!important}
     .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;color:var(--muted)}
     input,select{width:100%;height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:3px;padding:0 13px;outline:none}
@@ -156,7 +160,7 @@
       .mast-grid,.section-intro{grid-template-columns:1fr;gap:28px}.deal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.factor-grid{grid-template-columns:repeat(2,1fr)}.factor:nth-child(2){border-right:0}.factor:nth-child(-n+2){border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}
     }
     @media(max-width:620px){
-      .wrap{width:min(100% - 24px,1180px)}.mast{padding-top:24px}.mast-grid{gap:22px}.lede{font-size:16px}.tape-inner{justify-content:flex-start}.controls{padding-top:16px}.control-top{grid-template-columns:1fr 1fr}.search,.category-toggle{grid-column:1/-1}.category-toggle{grid-template-columns:repeat(3,1fr);width:100%}.deal-grid{grid-template-columns:1fr}.visual{height:190px}.factor-grid,.roadmap-grid,.detail-stats{grid-template-columns:1fr}.factor{border-right:0!important;border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}.factor:last-child{border-bottom:0}.phase+.phase{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px}.card-actions{grid-template-columns:1fr 1fr}.modal{padding:12px}.detail-stats div{border-right:0;border-bottom:1px solid var(--line)}.detail-stats div:last-child{border-bottom:0}.compare-tray{left:12px;right:12px;bottom:12px;justify-content:space-between}
+      .wrap{width:min(100% - 24px,1180px)}.mast{padding-top:24px}.mast-grid{gap:22px}.lede{font-size:16px}.tape-inner{justify-content:flex-start}.controls{padding-top:16px}.control-top{grid-template-columns:1fr 1fr}.search,.category-nav{grid-column:1/-1}.category-nav .category-toggle{grid-template-columns:repeat(3,1fr);width:auto;flex:1;min-width:0}.deal-grid{grid-template-columns:1fr}.visual{height:190px}.factor-grid,.roadmap-grid,.detail-stats{grid-template-columns:1fr}.factor{border-right:0!important;border-bottom:1px solid color-mix(in srgb,var(--paper) 22%,transparent)}.factor:last-child{border-bottom:0}.phase+.phase{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px}.card-actions{grid-template-columns:1fr 1fr}.modal{padding:12px}.detail-stats div{border-right:0;border-bottom:1px solid var(--line)}.detail-stats div:last-child{border-bottom:0}.compare-tray{left:12px;right:12px;bottom:12px;justify-content:space-between}
     }
     @keyframes tape{to{transform:translateX(-50%)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tape-inner{animation:none}}
@@ -318,10 +322,13 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
             <input id="search" type="search" placeholder="Look up any watch — reference, model, merchant…" aria-label="Search verified deals" />
           </label>
-          <div class="category-toggle" role="group" aria-label="Show deal category">
-            <button type="button" data-category-view="all" aria-pressed="true">All</button>
-            <button type="button" data-category-view="watches" aria-pressed="false">Watches</button>
-            <button type="button" data-category-view="cigars" aria-pressed="false">Cigars</button>
+          <div class="category-nav">
+            <div class="category-toggle" role="group" aria-label="Show deal category">
+              <button type="button" data-category-view="all" aria-pressed="true">All</button>
+              <button type="button" data-category-view="watches" aria-pressed="false">Watches</button>
+              <button type="button" data-category-view="cigars" aria-pressed="false">Cigars</button>
+            </div>
+            <a class="dispatch-link" href="#dispatch">Dispatch</a>
           </div>
           <select id="sort" aria-label="Sort verified deals">
             <option value="discount">Largest discount</option>
